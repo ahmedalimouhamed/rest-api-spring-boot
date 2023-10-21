@@ -1,5 +1,6 @@
 package com.example.rest.services.impl;
 
+import com.example.rest.exception.CloudVendorNotFoundException;
 import com.example.rest.model.CloudVendor;
 import com.example.rest.repository.CloudVendorRepository;
 import com.example.rest.services.CloudVendorService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CloudServiceImpl implements CloudVendorService {
@@ -38,6 +40,8 @@ public class CloudServiceImpl implements CloudVendorService {
 
     @Override
     public CloudVendor getCloudVendor(String vendorId) {
+        if(cloudVendorRepository.findById(vendorId).isEmpty())
+            throw new CloudVendorNotFoundException("Requested cloud vendor does not exists.");
         return cloudVendorRepository.findById(vendorId).get();
     }
 
